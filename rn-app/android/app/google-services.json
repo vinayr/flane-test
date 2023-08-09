@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "806778110547",
+    "project_id": "flane-test-a0235",
+    "storage_bucket": "flane-test-a0235.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:806778110547:android:1317d0933d8f4b43febca6",
+        "android_client_info": {
+          "package_name": "com.flaneapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "806778110547-oc9dvobjio1u3flpj8do46u9mnduuuh5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9VLn63zfNpI4UhDDMRHya9tKPVJU1iQw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "806778110547-oc9dvobjio1u3flpj8do46u9mnduuuh5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
