@@ -1,11 +1,13 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { AdminService } from 'src/admin/admin.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
+import { TopicNotificationDto } from 'src/admin/dto/topic-notification.dto';
 
 @Injectable()
 export class OrganizationsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService, private readonly adminService: AdminService) {}
 
   async create(organization: CreateOrganizationDto) {
     const exists = await this.prisma.organization.findUnique({ where: { name: organization.name } });
@@ -43,5 +45,11 @@ export class OrganizationsService {
     }
 
     return this.prisma.organization.delete({ where: { id } });
+  }
+
+  notify(id: string, data: TopicNotificationDto) {
+    const topic = `${id}_${data.topic}`;
+    const updatedData: TopicNotificationDto = { ...data, topic };
+    this.adminService.sendMessageToTopic(updatedData);
   }
 }

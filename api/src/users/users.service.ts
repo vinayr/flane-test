@@ -1,19 +1,20 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { AdminService } from 'src/admin/admin.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { TopicSubscriptionDto } from 'src/admin/dto/topic-subscription.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService, private readonly admin: AdminService) {}
 
   async create(user: CreateUserDto) {
-    const exists = await this.prisma.user.findUnique({ where: { email: user.email } });
-    if (exists) {
-      throw new ConflictException('User already exists');
-    }
-
-    return this.prisma.user.create({ data: user });
+    return this.prisma.user.upsert({
+      where: { email: user.email },
+      update: user,
+      create: user,
+    });
   }
 
   findAll() {
@@ -43,5 +44,19 @@ export class UsersService {
     }
 
     return this.prisma.user.delete({ where: { id } });
+  }
+
+  subscribeToTopic(data: TopicSubscriptionDto) {
+    // organizationId should be extracted from API key
+    // For this demo, user will send it in the request params
+    const topic = `${data.organizationId}_${data.topic}`;
+    const updatedData: TopicSubscriptionDto = { ...data, topic };
+    this.admin.subscribeToTopic(updatedData);
+  }
+
+  unsubscribeFromTopic(data: TopicSubscriptionDto) {
+    const topic = `${data.organizationId}_${data.topic}`;
+    const updatedData: TopicSubscriptionDto = { ...data, topic };
+    this.admin.unsubscribeFromTopic(updatedData);
   }
 }

@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus } from '@nestjs/common';
+import { Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { TopicSubscriptionDto } from 'src/admin/dto/topic-subscription.dto';
 
 @Controller('users')
 export class UsersController {
@@ -30,5 +32,17 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
+  }
+
+  @Post('subscribe')
+  subscribeToTopic(@Body() data: TopicSubscriptionDto, @Res() res: Response) {
+    this.usersService.subscribeToTopic(data);
+    res.status(HttpStatus.OK).send({ success: true });
+  }
+
+  @Post('unsubscribe')
+  unsubscribeFromTopic(@Body() data: TopicSubscriptionDto, @Res() res: Response) {
+    this.usersService.unsubscribeFromTopic(data);
+    res.status(HttpStatus.OK).send({ success: true });
   }
 }
