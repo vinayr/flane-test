@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { TopicSubscriptionDto } from 'src/admin/dto/topic-subscription.dto';
+import { TopicDto } from 'src/admin/dto/topic.dto';
 
 @Controller('users')
 export class UsersController {
@@ -34,15 +34,15 @@ export class UsersController {
     return this.usersService.remove(id);
   }
 
-  @Post('subscribe')
-  subscribeToTopic(@Body() data: TopicSubscriptionDto, @Res() res: Response) {
-    this.usersService.subscribeToTopic(data);
+  @Post(':id/subscribe')
+  subscribeToTopic(@Param('id') id: string, @Body() body: TopicDto, @Res() res: Response) {
+    this.usersService.subscribeToTopic(id, body);
     res.status(HttpStatus.OK).send({ success: true });
   }
 
-  @Post('unsubscribe')
-  unsubscribeFromTopic(@Body() data: TopicSubscriptionDto, @Res() res: Response) {
-    this.usersService.unsubscribeFromTopic(data);
+  @Post(':id/unsubscribe')
+  unsubscribeFromTopic(@Param('id') id: string, @Body() body: TopicDto, @Res() res: Response) {
+    this.usersService.unsubscribeFromTopic(id, body);
     res.status(HttpStatus.OK).send({ success: true });
   }
 }

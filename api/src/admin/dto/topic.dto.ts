@@ -1,10 +1,6 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
-export class TopicSubscriptionDto {
-  @IsString()
-  @IsNotEmpty()
-  deviceToken: string;
-
+export class TopicDto {
   @IsString()
   @IsNotEmpty()
   topic: string;

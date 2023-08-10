@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { AdminService } from 'src/admin/admin.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { TopicDto } from 'src/admin/dto/topic.dto';
 import { TopicSubscriptionDto } from 'src/admin/dto/topic-subscription.dto';
 
 @Injectable()
@@ -46,17 +47,22 @@ export class UsersService {
     return this.prisma.user.delete({ where: { id } });
   }
 
-  subscribeToTopic(data: TopicSubscriptionDto) {
-    // organizationId should be extracted from API key
-    // For this demo, user will send it in the request params
-    const topic = `${data.organizationId}_${data.topic}`;
-    const updatedData: TopicSubscriptionDto = { ...data, topic };
-    this.admin.subscribeToTopic(updatedData);
+  private async buildSubscriptionData(id: string, topic: string) {
+    const user = await this.findOne(id);
+    const data: TopicSubscriptionDto = {
+      deviceToken: user.deviceToken,
+      topic: `${user.organizationId}_${topic}`,
+    };
+    return data;
   }
 
-  unsubscribeFromTopic(data: TopicSubscriptionDto) {
-    const topic = `${data.organizationId}_${data.topic}`;
-    const updatedData: TopicSubscriptionDto = { ...data, topic };
-    this.admin.unsubscribeFromTopic(updatedData);
+  async subscribeToTopic(id: string, body: TopicDto) {
+    const data = await this.buildSubscriptionData(id, body.topic);
+    this.admin.subscribeToTopic(data);
+  }
+
+  async unsubscribeFromTopic(id: string, body: TopicDto) {
+    const data = await this.buildSubscriptionData(id, body.topic);
+    this.admin.unsubscribeFromTopic(data);
   }
 }

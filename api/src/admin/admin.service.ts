@@ -10,11 +10,11 @@ admin.initializeApp({
 @Injectable()
 export class AdminService {
   async subscribeToTopic(data: TopicSubscriptionDto) {
-    // try {
-    //   await admin.messaging().subscribeToTopic(data.deviceToken, data.topic);
-    // } catch (e) {
-    //   console.log('subscribeToTopic error', e);
-    // }
+    try {
+      await admin.messaging().subscribeToTopic(data.deviceToken, data.topic);
+    } catch (e) {
+      console.log('subscribeToTopic error', e);
+    }
   }
 
   async unsubscribeFromTopic(data: TopicSubscriptionDto) {
@@ -32,11 +32,11 @@ export class AdminService {
       },
       topic: data.topic,
     };
-    const dryRun = true;
-    console.log('sending notification');
+
+    console.log('sending notification', message);
 
     try {
-      await admin.messaging().send(message, dryRun);
+      await admin.messaging().send(message);
     } catch (e) {
       console.log('sendMessageToTopic error', e);
     }

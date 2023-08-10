@@ -47,9 +47,9 @@ export class OrganizationsService {
     return this.prisma.organization.delete({ where: { id } });
   }
 
-  notify(id: string, data: TopicNotificationDto) {
-    const topic = `${id}_${data.topic}`;
-    const updatedData: TopicNotificationDto = { ...data, topic };
-    this.adminService.sendMessageToTopic(updatedData);
+  notify(id: string, notification: TopicNotificationDto) {
+    const topic = `${id}_${notification.topic}`;
+    const data: TopicNotificationDto = { ...notification, topic };
+    this.adminService.sendMessageToTopic(data);
   }
 }

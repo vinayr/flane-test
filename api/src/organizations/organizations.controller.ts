@@ -34,7 +34,7 @@ export class OrganizationsController {
   }
 
   @Post(':id/notify')
-  notify(@Param('id') id: string, @Body() data: TopicNotificationDto) {
-    return this.organizationsService.notify(id, data);
+  notify(@Param('id') id: string, @Body() notification: TopicNotificationDto) {
+    return this.organizationsService.notify(id, notification);
   }
 }
