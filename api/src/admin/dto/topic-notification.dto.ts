@@ -3,9 +3,13 @@ import { IsString, IsNotEmpty } from 'class-validator';
 export class TopicNotificationDto {
   @IsString()
   @IsNotEmpty()
-  text: string;
+  topic: string;
 
   @IsString()
   @IsNotEmpty()
-  topic: string;
+  title: string;
+
+  @IsString()
+  @IsNotEmpty()
+  body: string;
 }

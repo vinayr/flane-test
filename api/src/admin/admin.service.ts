@@ -28,7 +28,8 @@ export class AdminService {
   async sendMessageToTopic(data: TopicNotificationDto) {
     const message = {
       data: {
-        text: data.text,
+        title: data.title,
+        body: data.body,
       },
       topic: data.topic,
     };

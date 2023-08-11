@@ -7,4 +7,9 @@ export default {
     organizationId: 'cll37vdfb0001vbg9n11gwoq5',
     email: 'user1@abc.com',
   },
+  events: {
+    SIGN_UP: 'SIGN_UP',
+    ADD_TO_CART: 'ADD_TO_CART',
+    WRITE_REVIEW: 'WRITE_REVIEW',
+  },
 };

@@ -14,7 +14,8 @@ const onMessageReceived = async (message: any) => {
   });
 
   await notifee.displayNotification({
-    body: message.data.text,
+    title: message.data.title,
+    body: message.data.body,
     android: {
       channelId,
       // pressAction is needed if you want the notification to open the app when pressed
@@ -28,7 +29,7 @@ const onMessageReceived = async (message: any) => {
 messaging().onMessage(onMessageReceived);
 messaging().setBackgroundMessageHandler(onMessageReceived);
 
-// To hide 'no background event handler has been set' warning
+// To hide 'no background event handler' warning
 notifee.onBackgroundEvent(async () => {});
 
 AppRegistry.registerComponent(appName, () => App);

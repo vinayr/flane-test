@@ -1,9 +1,17 @@
 import React, { useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Button } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import messaging from '@react-native-firebase/messaging';
 import notifee from '@notifee/react-native';
 import config from './config';
 import Api from './api';
+import { RootStackParamList } from './types';
+import Home from './screens/Home';
+import Product from './screens/Product';
+import Cart from './screens/Cart';
+import ThankYou from './screens/ThankYou';
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App() {
   useEffect(() => {
@@ -23,36 +31,16 @@ function App() {
     updateUserToken();
   }, []);
 
-  async function addToCart() {
-    const params = { topic: 'ADD_TO_CART' };
-    await Api.subscribe(config.user.id, params);
-  }
-
-  async function orderItems() {
-    let params = { topic: 'ADD_TO_CART' };
-    await Api.unsubscribe(config.user.id, params);
-
-    // params = { topic: 'ORDER_ITEMS' };
-    // await Api.subscribe(config.user.id, params);
-  }
-
   return (
-    <SafeAreaView style={styles.container}>
-      <Text>Hello World</Text>
-      <View>
-        <Button title="Add To Cart" onPress={addToCart} />
-        <Button title="Order" onPress={orderItems} />
-      </View>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Product" component={Product} />
+        <Stack.Screen name="Cart" component={Cart} />
+        <Stack.Screen name="ThankYou" component={ThankYou} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default App;
